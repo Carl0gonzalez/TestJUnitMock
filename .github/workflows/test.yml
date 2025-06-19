@@ -1,0 +1,15 @@
+# .github/workflows/test.yml
+name: Pruebas Unitarias Java
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Ejecutar pruebas
+        run: mvn test
