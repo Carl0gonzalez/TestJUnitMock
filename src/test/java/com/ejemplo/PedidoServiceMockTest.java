@@ -6,12 +6,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class PedidoServiceMockTest {
+
   @Test
   void testConMockDeDescuento() {
     DescuentoRepository mockRepo = mock(DescuentoRepository.class);
     when(mockRepo.obtenerPorcentaje("PROMO10")).thenReturn(0.10);
 
     PedidoService service = new PedidoService(mockRepo);
-    assertEquals(110.0, service.calcularTotal(100, "PROMO10", true));
+    double total = service.calcularTotal(100, "PROMO10", true);
+    assertEquals(110.0, total);
   }
 }

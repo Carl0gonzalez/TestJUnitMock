@@ -5,25 +5,26 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PedidoServiceTest {
-  PedidoService service = new PedidoService();
+  // Inyecta el repositorio real (que devuelve 0.0 para cualquier código por defecto)
+  private final DescuentoRepository repo = new DescuentoRepository();
+  private final PedidoService service = new PedidoService(repo);
 
   @Test
   void testSinDescuentoYEnvioNormal() {
-    assertEquals(110.0, service.calcularTotal(100, false, false));
+    double total = service.calcularTotal(100, "SIN-CODIGO", false);
+    assertEquals(110.0, total);
   }
 
   @Test
-  void testConDescuentoYEnvioExpress() {
-    assertEquals(110.0, service.calcularTotal(100, true, true));
-  }
-
-  @Test
-  void testConDescuentoYEnvioNormal() {
-    assertEquals(190.0, service.calcularTotal(200, true, false));
+  void testConDescuentoYEnvioNormalConRepoReal() {
+    // Si tu DescuentoRepository real devuelve 0.10 solo para "PROMO10":
+    double total = service.calcularTotal(200, "PROMO10", false);
+    assertEquals(190.0, total);
   }
 
   @Test
   void testSinDescuentoYEnvioExpress() {
-    assertEquals(170.0, service.calcularTotal(150, false, true));
+    double total = service.calcularTotal(150, "SIN-CODIGO", true);
+    assertEquals(170.0, total);
   }
 }
